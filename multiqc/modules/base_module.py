@@ -103,7 +103,6 @@ class BaseMultiqcModule(object):
                             yield f
                         elif filecontents:
                             f['f'] = fh.read()
-                            yield f
                 except (IOError, OSError, ValueError, UnicodeDecodeError):
                     if config.report_readerrors:
                         logger.debug("Couldn't open filehandle when returning file: {}".format(f['fn']))

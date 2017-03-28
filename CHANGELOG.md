@@ -257,6 +257,12 @@ To see what changes need to applied to your custom plugin code, please see the [
     * Written by @bschiffthaler
 
 #### Module updates:
+* [**BBMap**](http://jgi.doe.gov/data-and-tools/bbtools/) - new module!
+  * New module for the `BBTools` read mapping/trimming/stats suite/
+
+#### Core MultiQC updates:
+* Change in module structure and import statements (see above).
+* Empty module sections are now skipped in reports. No need to check if a plot function returns `None`!
 
 * **Bcftools**
     * Fixed bug with display of indels when only one sample
@@ -377,23 +383,7 @@ the need for a new module or plugin. For more information, please see the
     * Fixed bug in General Stats table number for old versions of cutadapt (pre v1.7)
     * Added support for _really_ old cutadapt logs (eg. v.1.2)
 * **FastQC**
-    * New plot showing total overrepresented sequence percentages.
-    * New option to parse a file containing a theoretical GC curve to display in the background.
-        * Human & Mouse Genome / Transcriptome curves bundled, or make your own using
-          [fastqcTheoreticalGC](https://github.com/mikelove/fastqcTheoreticalGC). See the
-          [MultiQC docs](http://multiqc.info/docs/#fastqc) for more information.
-* **featureCounts**
-    * Added parsing checks and catch failures for when non-featureCounts files are picked up by accident
-* **GATK**
-    * Fixed logger error in VariantEval module.
-* **Picard**
-    * Fixed missing sample overwriting bug in `RnaSeqMetrics`
-    * New feature to customise coverage shown from `HsMetrics` in General Statistics table
-    see the [docs](http://multiqc.info/docs/#picard) for info).
-    * Fixed compatibility problem with output from `CollectMultipleMetrics` for `CollectAlignmentSummaryMetrics`
-* **Preseq**
-    * Module now recognises output from `c_curve` mode.
-* **RSeQC**
+]
     * Made the gene body coverage plot show the percentage view by default
     * Made gene body coverage properly handle sample names
 * **Samtools**
