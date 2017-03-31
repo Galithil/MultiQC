@@ -157,7 +157,8 @@ Code contributions from:
 [@iimog](https://github.com/iimog),
 [@rlegendre](https://github.com/rlegendre),
 [@ehsueh](https://github.com/ehsueh)
-
+[@epruesse](https://github.com/epruesse)
+[@boulund](https://github.com/boulund)
 and many others. Thanks for your support!
 
 [adapterremoval]: http://multiqc.info/docs/#adapteremoval
