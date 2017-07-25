@@ -46,7 +46,8 @@ file_types = {
             'Cov':float,
             'Pos':int,
             'RunningPos':int
-        ]
+        ],
+        'not_implemented': ''
     },
     'bqhist': {
         'descr': 'Quality histogram designed for box plots.',
@@ -78,7 +79,8 @@ file_types = {
             'Median_fold':int,
             'Read_GC':float,
             'Std_Dev':float
-        ]
+        ],
+        'not_implemented': ''
     },
     'ehist': {
         'descr': 'Errors-per-read histogram.',
@@ -147,7 +149,8 @@ file_types = {
             'Name':str,
             'Length':int, 'Bases':int, 'Coverage':float,
             'Reads':int, 'RPKM':float, 'Frags':int, 'FPKM':float
-        ]
+        ],
+        'not_implemented': '',
     },
     'statsfile_machine': {
         'descr': 'General Stats',
@@ -201,14 +204,11 @@ class MultiqcModule(BaseMultiqcModule):
         # Init data dict
         self.mod_data = { key:{} for key in file_types }
 
-        # Init sections
-        self.intro = "BBMap reports"
-        self.sections = []
-        
         # Find output files
+        module_filetypes = [('bbmap/'+ft, ft) for ft in file_types]
         data_found = False
-        for file_type in config.sp['bbmap']:
-            for f in self.find_log_files(config.sp['bbmap'][file_type], filehandles=True, maxlines=6):
+        for module_filetype, file_type in module_filetypes:
+            for f in self.find_log_files(module_filetype, filehandles=True):
                 if self.parse_logs(file_type, **f):
                     self.add_data_source(f)
                     data_found = True
@@ -217,19 +217,22 @@ class MultiqcModule(BaseMultiqcModule):
             log.debug("Could not find any data in {}".format(config.analysis_dir))
             raise UserWarning
 
-        for file_type in config.sp['bbmap']:
+        for module_filetype, file_type in module_filetypes:
             if len(self.mod_data[file_type]) > 0:
                 log.error("section %s has %d entries", file_type,
                           len(self.mod_data[file_type]))
-                
-                self.sections.append({
-                    'name': file_types[file_type]['descr'],
-                    'anchor': 'bbmap-' + file_type,
-                    'content': self.plot_hist(file_type)
-                })
-        
-        
-    def parse_logs(self, file_type, root, s_name, fn, f):
+
+                self.add_section(
+                    name = 'BBMap' + file_type,
+                    anchor =  'bbmap-' + file_type,
+                    description = file_types[file_type]['descr'],
+                    helptext = 'PLACEHOLDER TEXT',
+                    plot = self.plot_hist(file_type)
+                )
+
+
+    def parse_logs(self, file_type, root, s_name, fn, f, **kw):
+        log.debug("Parsing %s/%s", root, fn)
         if not file_type in file_types:
             log.error("Unknown output type '{}'. Error in config?".format(file_type))
             return False
@@ -240,7 +243,7 @@ class MultiqcModule(BaseMultiqcModule):
 
         cols = log_descr['cols']
         if isinstance(cols, OrderedDict):
-            cols = cols.keys()
+            cols = list(cols.keys())
 
         kv = {}
         data = {}
@@ -265,7 +268,7 @@ class MultiqcModule(BaseMultiqcModule):
                 else:
                     # It should be the table header. Verify:
                     if line != cols:
-                        if line != cols + log_descr['extracols'].keys():
+                        if line != cols + list(log_descr['extracols'].keys()):
                             log.error("Table headers do not match those 'on file'. %s != %s",
                                       repr(line), repr(cols))
                         return False
@@ -285,7 +288,7 @@ class MultiqcModule(BaseMultiqcModule):
         self.mod_data[file_type][s_name] = {'data':data, 'kv': kv}
         log.debug("Found %s output for sample %s with %d rows",
                   file_type, s_name, len(data))
-    
+
         return True
 
     def plot_hist(self, file_type):
@@ -306,7 +309,7 @@ class MultiqcModule(BaseMultiqcModule):
             if cutoff < 0:
                 xmax = item[0]
                 break
-                
+
         data = {
             sample: {
                 x: samples[sample]['data'][x][0] if x in samples[sample]['data'] else 0
@@ -314,7 +317,7 @@ class MultiqcModule(BaseMultiqcModule):
             }
             for sample in samples
         }
-        
+
         plot = linegraph.plot(
             data,
             {
@@ -326,5 +329,5 @@ class MultiqcModule(BaseMultiqcModule):
 
         return plot
 
-        
-                
+
+

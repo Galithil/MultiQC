@@ -96,6 +96,7 @@ Many thanks to those involved!
 * New code to send exported JSON data to a a web server
     * This is in preparation for the upcoming MegaQC project. Stay tuned!
 
+
 #### Bug Fixes:
 * Specifying multiple config files with `-c`/`--config` now works as expected
     * Previously this would only read the last specified
