@@ -159,7 +159,6 @@ Code contributions from:
 [@ehsueh](https://github.com/ehsueh)
 [@epruesse](https://github.com/epruesse)
 [@boulund](https://github.com/boulund)
-and many others. Thanks for your support!
 
 [adapterremoval]: http://multiqc.info/docs/#adapteremoval
 [afterqc]:        http://multiqc.info/docs/#afterqc
