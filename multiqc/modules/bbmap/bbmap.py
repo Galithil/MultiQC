@@ -23,12 +23,12 @@ file_types = {
         'title': 'Average read quality',
         'descr': 'Histogram of average read quality.',
         'help_text': 'Placeholder help text.',
-        'cols': [
-            'Quality',
-            'count1',
-            'fraction1',
-            'count2',
-            'fraction2'
+        'cols': odict[
+            'Quality':int,
+            'count1':int,
+            'fraction1':float,
+            'count2':int,
+            'fraction2':float
         ],
         'plot_params': {
             'yLog': True,
@@ -256,7 +256,8 @@ class MultiqcModule(BaseMultiqcModule):
             name="BBTools",
             anchor="bbmap",
             href="http://jgi.doe.gov/data-and-tools/bbtools/",
-            info="is a suite of fast, multithreaded bioinformatics tools designed for analysis of DNA and RNA sequence data."
+            info="""is a suite of fast multithreaded bioinformatics tools 
+            designed for analysis of DNA and RNA sequence data."""
         )
 
         # Init data dict
@@ -277,11 +278,11 @@ class MultiqcModule(BaseMultiqcModule):
 
         for file_type in file_types:
             if len(self.mod_data[file_type]) > 0:
-                log.error("section %s has %d entries", file_type,
+                log.debug("section %s has %d entries", file_type,
                           len(self.mod_data[file_type]))
 
                 self.add_section(
-                    name = file_types[file_type]['title'],
+                    name = file_types[file_type]['title']+' ('+file_type+')',
                     anchor =  'bbmap-' + file_type,
                     description = file_types[file_type]['descr'],
                     helptext = file_types[file_type]['help_text'],
@@ -336,7 +337,7 @@ class MultiqcModule(BaseMultiqcModule):
                         for value_type, value in zip(log_descr['cols'].values(), line)
                     ]
                 else:
-                    line = map(int, line)
+                    line = list(map(int, line))
                 data[line[0]] = line[1:]
 
         if s_name in self.mod_data[file_type]:
@@ -349,8 +350,6 @@ class MultiqcModule(BaseMultiqcModule):
         return True
 
     def plot_hist(self, file_type):
-#        if file_type != "ihist":
-#            return "NA"
         samples = self.mod_data[file_type]
 
         sumy = sum([int(samples[sample]['data'][x][0])
