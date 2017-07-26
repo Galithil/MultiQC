@@ -214,7 +214,7 @@ class MultiqcModule(BaseMultiqcModule):
                     data_found = True
 
         if not data_found:
-            log.debug("Could not find any data in {}".format(config.analysis_dir))
+            log.debug("Could not find any data in '%s'", config.analysis_dir)
             raise UserWarning
 
         for module_filetype, file_type in module_filetypes:
@@ -234,7 +234,7 @@ class MultiqcModule(BaseMultiqcModule):
     def parse_logs(self, file_type, root, s_name, fn, f, **kw):
         log.debug("Parsing %s/%s", root, fn)
         if not file_type in file_types:
-            log.error("Unknown output type '{}'. Error in config?".format(file_type))
+            log.error("Unknown output type '%s'. Error in config?", file_type)
             return False
         log_descr = file_types[file_type]
         if 'not_implemented' in log_descr:
@@ -251,7 +251,6 @@ class MultiqcModule(BaseMultiqcModule):
             line = line.strip().split('\t')
             if line[0][0] == '#':
                 # It's a header row
-                
                 line[0] = line[0][1:] # remove leading '#'
                     
                 if line[0] != cols[0]:
