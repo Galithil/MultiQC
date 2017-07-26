@@ -20,26 +20,36 @@ odict = slice2OrderedDict()
 
 file_types = {
     'aqhist': {
+        'title': 'Average read quality',
         'descr': 'Histogram of average read quality.',
+        'help_text': 'Placeholder help text.',
         'cols': [
             'Quality',
             'count1',
             'fraction1',
             'count2',
             'fraction2'
-        ]
+        ],
+        'plot_params': {
+            'yLog': True,
+        }
     },
 #basecov
 #  - Coverage per base location.
 #  - too big to interpret here
     'bhist' : {
+        'title': 'Base composition',
         'descr': 'Base composition histogram by position.',
+        'help_text': 'Relative composition',
         'cols': odict[
             'Pos':int, 'A':float, 'C':float, 'G':float, 'T':float, 'N':float
-        ]
+        ],
+        'plot_params': {}
     },
     'bincov': {
+        'title': 'Binned coverage',
         'descr': 'Binned coverage per location (one line per X bases).',
+        'help_text': 'Placeholder help text.',
         'kvrows': ['Mean', 'STDev' ],
         'cols': odict[
             'RefName':str,
@@ -47,24 +57,35 @@ file_types = {
             'Pos':int,
             'RunningPos':int
         ],
+        'plot_params': {},
         'not_implemented': ''
     },
     'bqhist': {
+        'title': 'Base quality',
         'descr': 'Quality histogram designed for box plots.',
+        'help_text': 'Placeholder help text.',
         'cols': odict[
             'BaseNum':int,
             'count_1':int, 'min_1':int, 'max_1':int, 'mean_1':float,
             'Q1_1':int, 'med_1':int, 'Q3_1':int, 'LW_1':int, 'RW_1':int,
             'count_2':int, 'min_2':int, 'max_2':int, 'mean_2':float,
             'Q1_2':int, 'med_2':int, 'Q3_2':int, 'LW_2':int, 'RW_2':int
-        ]
+        ],
+        'plot_params': {}
     },
     'covhist': {
+        'title': 'Coverage histogram',
         'descr': 'Histogram of # occurrences of each depth level.',
-        'cols': odict['Coverage':int, 'numBases':int]
+        'help_text': 'Placeholder help text.',
+        'cols': odict['Coverage':int, 'numBases':int],
+        'plot_params': {
+            'yLog': True,
+        }
     },
     'covstats': {
+        'title': 'Coverage stats',
         'descr': 'Per-scaffold coverage info.',
+        'help_text': 'Placeholder help text.',
         'cols': odict[
             'ID':str,
             'Avg_fold':float
@@ -80,58 +101,85 @@ file_types = {
             'Read_GC':float,
             'Std_Dev':float
         ],
+        'plot_params': {},
         'not_implemented': ''
     },
     'ehist': {
+        'title': 'Errors-per-read',
         'descr': 'Errors-per-read histogram.',
-        'cols': odict['Errors':int, 'Count':int ]
+        'help_text': 'Placeholder help text.',
+        'cols': odict['Errors':int, 'Count':int ],
+        'plot_params': {}
     },
     'gchist' : {
+        'title': 'GC content',
         'descr': 'Read GC content histogram.',
+        'help_text': 'Placeholder help text.',
         'kvrows': ['Mean', 'Median', 'Mode', 'STDev'],
-        'cols': odict['GC':float, 'Count':int ]
+        'cols': odict['GC':float, 'Count':int ],
+        'plot_params': {}
     },
     'idhist': {
+        'title': 'Identity histogram',
         'descr': 'Histogram of read count versus percent identity.',
+        'help_text': 'Placeholder help text.',
         'kvrows': ['Mean_reads', 'Mean_bases',
                    'Median_reads', 'Median_bases',
                    'Mode_reads', 'Mode_bases',
                    'STDev_reads', 'STDev_bases' ],
         'cols': odict[
             'Identity':float, 'Reads':int, 'Bases':int
-        ]
+        ],
+        'plot_params': {}
     },
     'ihist': {
+        'title': 'Insert sizes',
         'descr': 'Histogram of insert sizes (for paired reads).',
+        'help_text': 'Placeholder help text.',
         'kvrows': ['Mean', 'Median', 'STDev', 'PercentOfPairs'],
-        'cols': odict['InsertSize':int, 'Count':int ]
+        'cols': odict['InsertSize':int, 'Count':int ],
+        'plot_params': {}
     },
     'indelhist': {
+        'title': 'Indel lengths',
         'descr': 'Indel length histogram.',
-        'cols': odict['Length':int, 'Deletions':int, 'Insertions':int]
+        'help_text': 'Placeholder help text.',
+        'cols': odict['Length':int, 'Deletions':int, 'Insertions':int],
+        'plot_params': {}
     },
     'lhist' : {
+        'title': 'Read lengths',
         'descr': 'Read length histogram.',
-        'cols': odict['Length':int, 'Count':int ]
+        'help_text': 'Placeholder help text.',
+        'cols': odict['Length':int, 'Count':int ],
+        'plot_params': {}
     },
     'mhist': {
+        'title': 'Match, sub, del, and ins rates',
         'descr': 'Histogram of match, sub, del, and ins rates by read location.',
+        'help_text': 'Placeholder help text.',
         'cols': odict[
             'BaseNum':int,
             'Match1':float, 'Sub1':float, 'Del1':float, 'Ins1':float, 'N1':float, 'Other1':float,
             'Match2':float, 'Sub2':float, 'Del2':float, 'Ins2':float, 'N2':float, 'Other2':float
-        ]
+        ],
+        'plot_params': {}
     },
     'qahist': {
+        'title': 'Quality accuracy',
         'descr': 'Quality accuracy histogram of error rates versus quality score.',
+        'help_text': 'Placeholder help text.',
         'kvrows': ['Deviation', 'DeviationSub' ],
         'cols': odict[
             'Quality':int, 'Match':int, 'Sub':int, 'Ins':int, 'Del':int,
             'TrueQuality':float, 'TrueQualitySub':float
-        ]
+        ],
+        'plot_params': {}
     },
     'qhist': {
+        'title': 'Quality',
         'descr': 'Quality histogram by position.',
+        'help_text': 'Placeholder help text.',
         'cols': odict[
             'BaseNum':int,
             'Read1_linear':float,
@@ -140,25 +188,35 @@ file_types = {
             'Read2_linear':float,
             'Read2_log':float,
             'Read2_measured':float
-        ]
+        ],
+        'plot_params': {}
     },
     'rpkm': {
+        'title': 'RPKM/FPKM',
         'descr': 'Per-scaffold RPKM/FPKM counts.',
+        'help_text': 'Placeholder help text.',
         'kvrows': ['File', 'Reads', 'Mapped', 'RefSequences' ],
         'cols': odict[
             'Name':str,
             'Length':int, 'Bases':int, 'Coverage':float,
             'Reads':int, 'RPKM':float, 'Frags':int, 'FPKM':float
         ],
+        'plot_params': {},
         'not_implemented': '',
     },
     'statsfile_machine': {
+        'title': 'General stats',
         'descr': 'General Stats',
-        'cols': []
+        'help_text': 'Placeholder help text.',
+        'cols': [],
+        'plot_params': {}
     },
     'statsfile': {
+        'title': 'General stats',
         'descr': 'General Stats',
+        'help_text': 'Placeholder help text.',
         'cols': [],
+        'plot_params': {},
         'not_implemented': ''
     }
 }
@@ -217,16 +275,16 @@ class MultiqcModule(BaseMultiqcModule):
             log.debug("Could not find any data in '%s'", config.analysis_dir)
             raise UserWarning
 
-        for module_filetype, file_type in module_filetypes:
+        for file_type in file_types:
             if len(self.mod_data[file_type]) > 0:
                 log.error("section %s has %d entries", file_type,
                           len(self.mod_data[file_type]))
 
                 self.add_section(
-                    name = 'BBMap' + file_type,
+                    name = file_types[file_type]['title'],
                     anchor =  'bbmap-' + file_type,
                     description = file_types[file_type]['descr'],
-                    helptext = 'PLACEHOLDER TEXT',
+                    helptext = file_types[file_type]['help_text'],
                     plot = self.plot_hist(file_type)
                 )
 
@@ -317,13 +375,15 @@ class MultiqcModule(BaseMultiqcModule):
             for sample in samples
         }
 
+        plot_params = {
+                'id': 'bbmap-' + file_type,
+                'title':  file_types[file_type]['title'],
+                'xmax': xmax
+        }
+        plot_params.update(file_types[file_type]['plot_params'])
         plot = linegraph.plot(
             data,
-            {
-                'id': 'bbmap-' + file_type,
-                'title':  file_types[file_type]['descr'],
-                'xmax': xmax
-            }
+            plot_params
         )
 
         return plot
