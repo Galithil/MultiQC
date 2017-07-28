@@ -288,6 +288,16 @@ class MultiqcModule(BaseMultiqcModule):
                     helptext = file_types[file_type]['help_text'],
                     plot = self.plot_hist(file_type)
                 )
+            
+            if any(self.mod_data[file_type][sample]['kv'] 
+                   for sample in self.mod_data[file_type]):
+                self.add_section(
+                    name = file_types[file_type]['title']+' summary table ('+file_type+')',
+                    anchor =  'bbmap-' + file_type,
+                    description = file_types[file_type]['descr'],
+                    helptext = file_types[file_type]['help_text'],
+                    plot = self.make_table(file_type)
+                )
 
 
     def parse_logs(self, file_type, root, s_name, fn, f, **kw):
@@ -322,7 +332,7 @@ class MultiqcModule(BaseMultiqcModule):
                                   cols[0])
                         continue
                     # save key value pair
-                    kv[line[0][1:]] = line[1]
+                    kv[line[0]] = line[1]
                 else:
                     # It should be the table header. Verify:
                     if line != cols:
@@ -350,6 +360,8 @@ class MultiqcModule(BaseMultiqcModule):
         return True
 
     def plot_hist(self, file_type):
+        """ Create line graph plot for basic histogram data for 'file_type'.
+        """
         samples = self.mod_data[file_type]
 
         sumy = sum([int(samples[sample]['data'][x][0])
@@ -387,5 +399,15 @@ class MultiqcModule(BaseMultiqcModule):
 
         return plot
 
+    def make_table(self, file_type):
+        """  Create table for all key-value items for 'file_type'.
+        """
 
-
+        table_data = {sample: items['kv'] for sample, items in self.mod_data[file_type].items()}
+        for sample in table_data:
+            for key, value in table_data[sample].items():
+                try:
+                    table_data[sample][key] = float(value)
+                except ValueError:
+                    pass
+        return table.plot(table_data)
