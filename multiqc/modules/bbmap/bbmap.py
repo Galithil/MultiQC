@@ -56,7 +56,7 @@ class MultiqcModule(BaseMultiqcModule):
                     anchor =  'bbmap-' + file_type,
                     description = file_types[file_type]['descr'],
                     helptext = file_types[file_type]['help_text'],
-                    plot = self.plot_hist(file_type)
+                    plot = self.plot(file_type)
                 )
             
             if any(self.mod_data[file_type][sample]['kv'] 
@@ -66,7 +66,7 @@ class MultiqcModule(BaseMultiqcModule):
                     anchor =  'bbmap-' + file_type,
                     description = file_types[file_type]['descr'],
                     helptext = file_types[file_type]['help_text'],
-                    plot = self.make_table(file_type)
+                    plot = self.make_basic_table(file_type)
                 )
 
 
@@ -129,47 +129,21 @@ class MultiqcModule(BaseMultiqcModule):
 
         return True
 
-    def plot_hist(self, file_type):
-        """ Create line graph plot for basic histogram data for 'file_type'.
+    def plot(self, file_type):
+        """ Call file_type plotting function.
         """
+
         samples = self.mod_data[file_type]
+        plot_title = file_types[file_type]['title']
+        plot_func = file_types[file_type]['plot_func']
+        plot_params = file_types[file_type]['plot_params']
+        return plot_func(samples, 
+                    file_type, 
+                    plot_title=plot_title, 
+                    plot_params=plot_params)
 
-        sumy = sum([int(samples[sample]['data'][x][0])
-                    for sample in samples
-                    for x in samples[sample]['data']])
 
-        cutoff = sumy * 0.999
-        all_x = set()
-        for item in sorted(chain(*[samples[sample]['data'].items()
-                                   for sample in samples])):
-            all_x.add(item[0])
-            cutoff -= item[1][0]
-            if cutoff < 0:
-                xmax = item[0]
-                break
-
-        data = {
-            sample: {
-                x: samples[sample]['data'][x][0] if x in samples[sample]['data'] else 0
-                for x in all_x
-            }
-            for sample in samples
-        }
-
-        plot_params = {
-                'id': 'bbmap-' + file_type,
-                'title':  file_types[file_type]['title'],
-                'xmax': xmax
-        }
-        plot_params.update(file_types[file_type]['plot_params'])
-        plot = linegraph.plot(
-            data,
-            plot_params
-        )
-
-        return plot
-
-    def make_table(self, file_type):
+    def make_basic_table(self, file_type):
         """  Create table of key-value items in 'file_type'.
         """
 

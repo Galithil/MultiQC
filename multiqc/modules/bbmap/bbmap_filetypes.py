@@ -1,9 +1,16 @@
 from collections import OrderedDict
+from itertools import chain
+
+from .plot_basic_hist import plot_basic_hist
+from .plot_aqhist import plot_aqhist
+#from .plot_bhist import plot_bhist
+#from .plot_bqhist import plot_bqhist
 
 class slice2OrderedDict(object):
     def __getitem__(self, keys):
         return OrderedDict([(slice.start, slice.stop) for slice in keys])
 odict = slice2OrderedDict()
+
 
 file_types = {
     'aqhist': {
@@ -17,6 +24,7 @@ file_types = {
             'count2':int,
             'fraction2':float
         ],
+        'plot_func': plot_aqhist,
         'plot_params': {
             'yLog': True,
         }
@@ -31,6 +39,7 @@ file_types = {
         'cols': odict[
             'Pos':int, 'A':float, 'C':float, 'G':float, 'T':float, 'N':float
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'bincov': {
@@ -44,6 +53,7 @@ file_types = {
             'Pos':int,
             'RunningPos':int
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {},
         'not_implemented': ''
     },
@@ -58,6 +68,7 @@ file_types = {
             'count_2':int, 'min_2':int, 'max_2':int, 'mean_2':float,
             'Q1_2':int, 'med_2':int, 'Q3_2':int, 'LW_2':int, 'RW_2':int
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'covhist': {
@@ -65,6 +76,7 @@ file_types = {
         'descr': 'Histogram of # occurrences of each depth level.',
         'help_text': 'Placeholder help text.',
         'cols': odict['Coverage':int, 'numBases':int],
+        'plot_func': plot_basic_hist,
         'plot_params': {
             'yLog': True,
         }
@@ -88,6 +100,7 @@ file_types = {
             'Read_GC':float,
             'Std_Dev':float
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {},
         'not_implemented': ''
     },
@@ -96,6 +109,7 @@ file_types = {
         'descr': 'Errors-per-read histogram.',
         'help_text': 'Placeholder help text.',
         'cols': odict['Errors':int, 'Count':int ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'gchist' : {
@@ -104,6 +118,7 @@ file_types = {
         'help_text': 'Placeholder help text.',
         'kvrows': ['Mean', 'Median', 'Mode', 'STDev'],
         'cols': odict['GC':float, 'Count':int ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'idhist': {
@@ -117,6 +132,7 @@ file_types = {
         'cols': odict[
             'Identity':float, 'Reads':int, 'Bases':int
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'ihist': {
@@ -125,6 +141,7 @@ file_types = {
         'help_text': 'Placeholder help text.',
         'kvrows': ['Mean', 'Median', 'STDev', 'PercentOfPairs'],
         'cols': odict['InsertSize':int, 'Count':int ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'indelhist': {
@@ -132,6 +149,7 @@ file_types = {
         'descr': 'Indel length histogram.',
         'help_text': 'Placeholder help text.',
         'cols': odict['Length':int, 'Deletions':int, 'Insertions':int],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'lhist' : {
@@ -139,6 +157,7 @@ file_types = {
         'descr': 'Read length histogram.',
         'help_text': 'Placeholder help text.',
         'cols': odict['Length':int, 'Count':int ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'mhist': {
@@ -150,6 +169,7 @@ file_types = {
             'Match1':float, 'Sub1':float, 'Del1':float, 'Ins1':float, 'N1':float, 'Other1':float,
             'Match2':float, 'Sub2':float, 'Del2':float, 'Ins2':float, 'N2':float, 'Other2':float
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'qahist': {
@@ -161,6 +181,7 @@ file_types = {
             'Quality':int, 'Match':int, 'Sub':int, 'Ins':int, 'Del':int,
             'TrueQuality':float, 'TrueQualitySub':float
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'qhist': {
@@ -176,6 +197,7 @@ file_types = {
             'Read2_log':float,
             'Read2_measured':float
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'rpkm': {
@@ -188,6 +210,7 @@ file_types = {
             'Length':int, 'Bases':int, 'Coverage':float,
             'Reads':int, 'RPKM':float, 'Frags':int, 'FPKM':float
         ],
+        'plot_func': plot_basic_hist,
         'plot_params': {},
         'not_implemented': '',
     },
@@ -196,6 +219,7 @@ file_types = {
         'descr': 'General Stats',
         'help_text': 'Placeholder help text.',
         'cols': [],
+        'plot_func': plot_basic_hist,
         'plot_params': {}
     },
     'statsfile': {
@@ -204,6 +228,7 @@ file_types = {
         'help_text': 'Placeholder help text.',
         'cols': [],
         'plot_params': {},
+        'plot_func': plot_basic_hist,
         'not_implemented': ''
     }
 }
